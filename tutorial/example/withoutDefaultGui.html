@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;400&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>TkAPI.js - Example Code</title>
+    <style>
+        /* NORMAL MODE */
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Jost', sans-serif;
+        }
+        footer > section{
+            border-bottom: 2px solid #666A86;
+        }
+        header a{
+            text-decoration: underline;
+        }
+        header a:hover{
+            text-decoration: none;
+        }
+        a{
+            color: #666A86;
+            text-decoration: none;
+        }
+        a:hover{
+            color: black;
+        }
+        /* GAME VIEWER */
+        main > .tkGUI-viewer{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            position: relative;
+            border-radius: 20px;
+            cursor: pointer;
+            grid-gap: 5px;
+            transition: 1s;
+        }
+        /* INNER DIV */
+        main > .tkGUI-viewer > div{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            font-size: 24px; /* BIG FONT SIZE */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* CENTER ALL */
+            border-radius: 20px;
+        }
+        @media screen and (max-width: 600px){
+            main > .tkGUI-viewer > div{
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head class="py-2">
+    <header class="w-10 py-5 pb-2 text-center">
+        <h4>TkAPI.js</h4>
+        <h5>Example Code Without Default Native GUI</h5>
+        <p>
+            <a href="javascript:" onclick="toggleMode()">Activate <span class="current-mode">Random</span> Mode</a>
+        </p>
+        <!-- YOU CAN WRITE YOUR OWN STYLE -->
+    </header>
+    <main class="py-5 d-flex align-items-center flex-column">
+        <section class="tkGUI-viewer">
+            <div class="0" block-position="0"></div>
+            <div class="1" block-position="1"></div>
+            <div class="2" block-position="2"></div>
+            <div class="3" block-position="3"></div>
+            <div class="4" block-position="4"></div>
+            <div class="5" block-position="5"></div>
+            <div class="6" block-position="6"></div>
+            <div class="7" block-position="7"></div>
+            <div class="8" block-position="8"></div>
+            <!-- YOU CAN ANYTHING YOU ONE -->
+        </section>
+    </main>
+    <footer class="w-10 py-5 d-flex justify-content-center position-fixed fixed-bottom h4">
+        <section>
+            <a href="" class="mx-2">
+                <ion-icon name="logo-github"></ion-icon>
+            </a>
+            <a href="" class="mx-2">
+                <ion-icon name="code-slash"></ion-icon>
+            </a>
+            <a href="" class="mx-2">
+                <ion-icon name="people"></ion-icon>
+            </a>
+        </section>
+    </footer>
+    <!-- GAME LAUNCH -->
+<body>
+    <!-- ION-ICON -->
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <!-- INNER JS  -->
+    <script src="../../min/tkapi.min.js"></script>
+    <!-- 
+        ADD THE JS BELOW IF YOU WANT TO CREATE AN EASY TAB
+        IN THIS CASE I AM GOING TO MAKE IT WITHOUT THE LIBRARY DEFAULT GUI
+
+        IF YOU WANT TO SEE EXAMPLE CODES FOR THE DEFAULT GUI GO TO ./example/withDefaultGui.html
+    -->
+    <!-- <script src="../min/tkapiGui.min.js"></script>  -->
+    <script>
+        const TKAPI = new TkApi(); // DEFAULTS OPTIONS
+
+        // TOGGLE THE BOT MODE FROM DEFAULT {botType:"Bot"} TO {botType:"Random"} AND VICE VERSA
+        function toggleMode(){
+            // RESET ALL FIRST
+            TKAPI.reset();
+            // RESET TABLE
+            resetBoard();
+            //----------
+            const mode = (TKAPI.options.botType == 'Bot')? 'Random' : 'Bot';
+
+            // REPLACE CURRENT MODE
+            document.querySelector('.current-mode').innerHTML = TKAPI.options.botType;
+
+            // CHANGE THE BOT MODE WITH class.options;
+            TKAPI.options.botType = mode;
+
+        }
+
+        // FUNCTION TO RESET THE GAME UI BOARD, THE x AND o
+        function resetBoard(){
+            btnPositionDiv.forEach(el => {
+                el.innerHTML = '';
+            });
+        }
+
+        // console.log(TKAPI.options);  IF YOU WANT TO SEE THE CURRENT OPTIONS AND CHANGE IT IF YOU WANT, IT IS A PUBLIC PROPERTY
+        let gameMarker = TKAPI.options.symbol;
+
+        let btnPositionDiv = document.querySelectorAll('.tkGUI-viewer > div');
+        btnPositionDiv.forEach(el =>{
+            el.addEventListener('click', ()=>{
+                let botNum = TKAPI.getResponse(parseInt(el.getAttribute('block-position')));
+                // IF BOT RETURN FALSE DO NOT DO ANYTHING
+                // REMMENBER THAT EXIST THE POSITION 0, SO YOU NEED TO BE CAREFULL TO USE if(botNum){} BECAUSE THAT WILL RETURN FALSE WHEN THE BOT RETURN POSITION 0
+                if(botNum !== false){ 
+                    // IF THE BOT RETURN A NUMBER MEANS THAT ALL IS GOING WELL AND YOU CAN CONTINUE RUNNING THE PROCESS HERE
+                    el.innerHTML = gameMarker.user;
+
+                    // REMMENBER THAT EXIST THE -1 STATUS AND MEANS THAT THE BOT STOPPED WORKING BECAUSE SOMEONE WON, AND IS WAITING THE USER FOR RESET
+                    if(botNum >= 0){
+                        btnPositionDiv[botNum].innerHTML = gameMarker.bot;
+                    }
+
+                    // CHECK THE GAME STATUS WITH class.getWinner();
+
+                    // FOR SIMPLY UI VIEW IN DEBUG PROCCESS YOU CAN USE THE class.getSimplyUI();
+
+                    let statusGame = TKAPI.getWinner();
+
+                    if(statusGame){
+                        let bgColor; // SHOW A DIFFERENT COLOR
+                        let textAlert; //SHOW A ALERT
+
+                        switch (statusGame) {
+                            case 'user':
+                                bgColor = '#00e640';
+                                textAlert = 'You won';
+                                // +1
+                                break;
+                            case 'draw':
+                                bgColor = '#f5e653';
+                                textAlert = 'Nobody won';
+                                break;
+                            case 'bot':
+                                bgColor = '#cf000f';
+                                textAlert = 'The bot won';
+                                // +1
+                                break;
+                            default:
+
+                                break;
+                        }
+
+                        // GENERATE REPORT
+                        document.body.style.background = bgColor;
+
+                        // DELAY BECAUSE THE BODY PRINT COLOR NEEDS TIME
+                        setTimeout(()=>{
+                            alert(textAlert);
+
+                            TKAPI.reset();
+
+                            // RESET THE TEXT BOARD TABLE
+                            resetBoard();
+
+                            document.body.style.background = '';
+                        }, 300);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
