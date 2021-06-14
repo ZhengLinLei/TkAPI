@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="TkAPI License" />
   </a>&nbsp;
   <a>
-    <img src="https://img.shields.io/badge/version-1.2.3-brightgreen" alt="TkAPI Version" />
+    <img src="https://img.shields.io/badge/version-1.0-brightgreen" alt="TkAPI Version" />
   </a>&nbsp;
   <a>
     <img src="https://img.shields.io/badge/size-4kb-yellow" alt="TkAPI Size" />
