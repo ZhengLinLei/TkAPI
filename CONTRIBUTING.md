@@ -2,4 +2,4 @@
 
 This project is in initial version, so it would have some bugs.
 
-Please let us know when you find some one in the [issues][]
+Please let us know when you find some one in the [issues](https://github.com/ZhengLinLei/TkAPI/issues)
